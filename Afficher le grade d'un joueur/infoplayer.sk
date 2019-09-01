@@ -1,0 +1,13 @@
+command /infoplayer [<player>]:
+	permission: infoplayer.admin
+	trigger:
+		if arg 1 is not set:
+			send "&cErreur: &6Vous devez mettre un pseudo de joueur à vérifier !"
+		else:
+			wait 2 ticks
+			open chest with 6 rows named "&c➢ Vérification de &4%arg 1%" to player
+			wait 2 ticks
+			if player has permission "admin.use":
+				format slot 0 of player with dirt named "&cAdministrateur" to be unstable
+			else if player has permission "modo.use":
+				format slot 0 of player with dirt named "&6Modérateur" to be unstable
