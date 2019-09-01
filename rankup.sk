@@ -1,0 +1,10 @@
+command /ru [<text>]:
+	trigger:
+		if arg-1 is "1":
+			if player has permission "rankup.1":
+				if 2500 is less than or equal to player's money:
+					message "&bRankup &8» &fVous venez de &arankup&f."
+				else:
+					message "&bRankup &8» &cErreur: Vous n'avez pas &a2 500$&c."
+			else:
+				message "&bRankup &8» &cErreur: Vous n'avez pas la permission rankup.1"
