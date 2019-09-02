@@ -1,0 +1,28 @@
+command /kit [<text>]:
+	permission: kit.bouffe
+	trigger:
+		if arg 1 is not set:
+			send "Liste des kits:"
+			send "- bouffe"
+		else:
+			send "[Erreur] Ce n'est pas un kit valide !"
+		if arg 1 is "bouffe":
+			if {cooldown::%player%} is not set:
+				give 32 cooked porkchop to player
+				send "[&eInfo] Tu as bien reçu ton kit  !"
+				set {cooldown::%player%} to 3600
+				set {seconde.%player%} to 60
+				set {minute.%player%} to 60
+				while {cooldown::%player%} is set:
+					remove 1 from {cooldown::%player%}
+					remove 1 from {seconde.%player%}
+					if {seconde.%player%} = 0:
+						remove 1 from {minute.%player%}
+						set {seconde.%player%} to 60
+					wait 1 second
+					if {cooldown::%player%} is less than 0:
+						clear {cooldown::%player%}
+						clear {minute.%player%}
+						clear {seconde.%player%}
+			else:
+				send "[Erreur] Patientez encore %{minute.%player%}% minutes et %{seconde.%player%}% secondes"
