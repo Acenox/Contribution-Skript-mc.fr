@@ -3,7 +3,10 @@ command /ru [<text>]:
 		if arg-1 is "1":
 			if player has permission "rankup.1":
 				if 2500 is less than or equal to player's money:
-					message "&bRankup &8» &fVous venez de &arankup&f."
+					message "&bRankup &8» &fVous venez de &arankup&f. &7( -2500 crédits )"
+					make console execute command "/pex user %player% group set so"
+					remove "rankup.1" from player's permissions
+					add "rankup.2" to player's permissions
 				else:
 					message "&bRankup &8» &cErreur: Vous n'avez pas &a2 500$&c."
 			else:
