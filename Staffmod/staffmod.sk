@@ -1,0 +1,135 @@
+#Options modifiables
+
+options:
+
+	command: mod
+	#commande par défaut pour acceder au staff mod
+
+	permission: mod.staff
+	#permission par défaut pour acceder au staff mod
+
+	permission message: &cErreur, tu n'as pas la permission de faire cela.
+
+#Fin des options configurables
+
+command /{@command}:
+	permission: {@permission}
+	permission message: {@permission message}
+	trigger:
+		if {staff.%player%} is not set:
+			set {staff.%player%} to false
+		if {staff.%player%} is false:
+			set {staff.%player%} to true
+			set {_count} to 0
+			loop 36 times:
+				set {inv.%player%.%{_count}%} to slot {_count} of player's inventory
+				add 1 to {_count}
+			set the helmet of player to {inv.%player%.helmet}
+			set the chestplate of player to {inv.%player%.chest}
+			set the leggings of player to {inv.%player%.legs}
+			set the boots of player to {inv.%player%.feet}
+			send "&aVôtre inventaire à été sauvergardé !"
+			set player's flight mode to true
+			if {vanish.%player%} is true:
+				make player execute command "/vanish"
+				send "&7Vous êtes en vanish"
+			set {god.%player%} to true
+			set {fly.%player%} to true
+			set {_slot} to 0
+			clear player's inventory
+			loop 9 times:
+				set slot {_slot} of player's inventory to gray stained glass pane named "&cStaff mod"
+				add 1 to {_slot}
+			wait 2 ticks
+			set slot 0 of player's inventory to a gray dye named "&cDésactiver le vanish"
+			set slot 8 of player's inventory to a barrier named "&cQuitter le Staff mod"
+			json("%player%", "&5Le Staff Mod est activé !||ttp:&7Désactiver le Staff Mod||sgt:/{@command}")
+			stop
+		if {staff.%player%} is true:
+			set {staff.%player%} to false
+			set {_count} to 0
+			clear player's inventory
+			loop 36 times:
+				set slot {_count} of player's inventory to {inv.%player%.%{_count}%}
+				add 1 to {_count}
+			set {inv.%player%.helmet} to the helmet of player 
+			set {inv.%player%.chest} to the chestplate of player
+			set {inv.%player%.legs} to the leggings of player
+			set {inv.%player%.feet} to the boots of player
+			send "&aVôtre inventaire à été chargé !"
+			set player's flight mode to false
+			set {god.%player%} to false
+			if {vanish.%player%} is true:
+				make player execute command "/vanish"
+				send "&7Vous êtes en vanish"
+			clear {fly.%player%}
+			json("%player%", "&5Le Staff Mod est désactivé !||ttp:&7Réactiver le Staff Mod||sgt:/{@command}")
+			stop
+
+on rightclick with lime dye:
+	send "Le RightClick marche"
+	if {staff.%player%} is true:
+		send "La détection du true marche"
+		if name of tool is "&aActiver le vanish":
+			send "La détection du tag marche"
+			make player execute command "/vanish"
+
+on rightclick with grey dye:
+	send "Le RightClick marche"
+	if {staff.%player%} is true:
+		send "La détection du true marche"
+		if name of tool is "&cDésactiver le vanish":
+			send "La détection du tag marche"
+			make player execute command "/vanish"
+
+on rightclick with barrier:
+	if {staff.%player%} is true:
+		if name of tool is "&cQuitter le Staff mod":
+			send "La détection du tag marche"
+			make player execute command "/{@command}"﻿
+			
+on leftclick with lime dye:
+	send "Le RightClick marche"
+	if {staff.%player%} is true:
+		send "La détection du true marche"
+		if name of tool is "&aActiver le vanish":
+			send "La détection du tag marche"
+			make player execute command "/vanish"
+
+on leftclick with grey dye:
+	send "Le RightClick marche"
+	if {staff.%player%} is true:
+		send "La détection du true marche"
+		if name of tool is "&cDésactiver le vanish":
+			send "La détection du tag marche"
+			make player execute command "/vanish"
+
+on leftclick with barrier:
+	if {staff.%player%} is true:
+		if name of tool is "&cQuitter le Staff mod":
+			send "La détection du tag marche"
+			make player execute command "/{@command}"﻿
+
+on drop:
+	if {staff.%player%} is true:
+		cancel event
+
+on place:
+	if {staff.%player%} is true:
+		cancel event
+
+on break:
+	if {staff.%player%} is true:
+		cancel event
+
+on burn:
+	if {staff.%player%} is true:
+		cancel event
+
+on consume:
+	if {staff.%player%} is true:
+		cancel event
+
+on inventory click:
+	if {staff.%player%} is true:
+		cancel event
