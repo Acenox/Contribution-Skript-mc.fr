@@ -1,0 +1,35 @@
+command /topkill:
+    trigger:
+        loop {topkills::*}:
+            add 1 to {_size}
+            if {_low.to.high.list::%loop-value%} is not set:
+                set {_low.to.high.list::%loop-value%} to loop-index
+            else:
+                set {_n} to 0
+                loop {_size} times:
+                    set {_n} to {_n}+1
+                    {_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+                    set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+                    stop loop
+        wait 1 tick
+        set {_n} to size of {_low.to.high.list::*}
+        loop {_low.to.high.list::*}:
+            set {_high.to.low.list::%{_n}%} to loop-value
+            set {_n} to {_n}-1
+        wait 1 tick
+        set {_i} to 0
+        send "&8--- &bTop-Kill &8---"
+        loop {_high.to.low.list::*}:
+            add 1 to {_topnumber﻿}
+            set {_player} to "%loop-value%" parsed as offlineplayer
+            send "&d%{_topnumber}% &7- &c%{_player}% &b» &c%{topkills::%loop-value%}% Kills"
+            add 1 to {_i}
+            if {_topnumber} > 9:
+                clear {spam}
+                send "&8--- &bTop-Kill &8---"
+                stop
+
+on death:
+	if attacker is a player:
+		if victim is player:
+			add 1 to {topkills::%name of attacker%}
